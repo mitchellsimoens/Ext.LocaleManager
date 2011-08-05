@@ -68,7 +68,7 @@ Ext.define('Ext.LocaleManager', {
     /**
      * @private
      */
-    _langauge : 'en',
+    _language : 'en',
     /**
      * @private
      */

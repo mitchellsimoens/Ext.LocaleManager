@@ -7,7 +7,7 @@ Ext.LocaleManager.setConfig({
 Ext.onReady(function() {
     var lm       = Ext.LocaleManager,
         callback = function(manager) {
-            console.log(manager.get('button.action'));
+            console.log(manager.get('buttons.action'));
         };
 
     lm.loadLocale(callback);
