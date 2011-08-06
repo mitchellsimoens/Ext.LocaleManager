@@ -3,7 +3,8 @@ Ext.Loader.setConfig({
 });
 
 Ext.create('Ext.app.Application', {
-    name : 'app',
+    name     : 'app',
+    language : 'en',
 
     autoCreateViewport : false,
 
@@ -17,9 +18,14 @@ Ext.create('Ext.app.Application', {
 
     launch: function() {
         var me       = this,
+            lang     = me.language,
             callback = function(manager) {
-                me.getView('Viewport').create();
+                me.viewport = me.getView('Viewport').create();
             };
+
+        Ext.LocaleManager.setConfig({
+            language : lang
+        });
 
         Ext.LocaleManager.loadLocale(callback);
     }

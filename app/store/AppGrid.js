@@ -13,10 +13,5 @@ Ext.define('app.store.AppGrid', {
         { name : "Record 7", column1 : "7", column2 : "7" },
         { name : "Record 8", column1 : "8", column2 : "8" },
         { name : "Record 9", column1 : "9", column2 : "9" }
-    ],
-
-    proxy : {
-        type : 'ajax',
-        url  : 'data.json'
-    }
+    ]
 });
