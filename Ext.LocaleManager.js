@@ -216,27 +216,28 @@ Ext.define('Ext.LocaleManager', {
      *     <script>
      *
      * @param {String} key The key to look up in the locale.
-     * @return {Mixed} locale The text found in locale. Returns undefined if Ext.LocaleManager is not loaded or if key is not found.
+     * @param {String} defaultText Default text to be used if key is not found.
+     * @return {String} locale The text found in locale. Returns undefined if Ext.LocaleManager is not loaded or if key is not found.
      */
-    get: function(key) {
+    get: function(key, defaultText) {
         var me     = this,
             locale = me._locale,
             keys   = key.split('.'),
             k      = 0,
-            kNum   = keys.length,
-            text;
+            kNum   = keys.length;
 
         if (!me.isLoaded()) {
-            return undefined;
+            return defaultText;
         }
 
         for (; k < kNum; k++) {
-            key    = keys[k];
+            key = keys[k];
+
             if (locale) {
                 locale = locale[key];
             }
         }
 
-        return locale;
+        return locale || defaultText;
     }
 });
