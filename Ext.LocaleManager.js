@@ -30,6 +30,13 @@ Ext.define('Ext.LocaleManager', {
     singleton : true,
 
     /**
+     * @cfg {Object} ajaxConfig
+     * The configuration Object to be used in the {@link Ext.Ajax} request.
+     * The url for the request comes from the path config.
+     * Ext.LocaleManager will automatically add a language parameter.
+     * Defaults to {}.
+     */
+    /**
      * @cfg {String} fileTpl
      * A string to format into a file name with the language config. Defaults to 'locale_{0}.js'.
      */
@@ -49,6 +56,19 @@ Ext.define('Ext.LocaleManager', {
      * @cfg {Number} removeJSFileDelay
      * Tie in milliseconds to remove the script tag after loading has been detected. Defaults to 100.
      */
+    /**
+     * @cfg {Function} translator
+     * This is the function that can translate what was returned when using the 'ajax' type.
+     * Parameters sent to this function are the options, success, and response from the {@link Ext.Ajax} request callback.
+     * Default function with use {@link Ext.decode} on the response.responseText.
+     */
+    /**
+     * @cfg {String} type
+     * The mechanism of loading.
+     * Value of 'script' will create a script tag to load Locale.
+     * Value of 'ajax' will send an Ext.Ajax.request to load Locale.
+     * Deafults to 'script'.
+     */
 
     /**
      * @property {Boolean} _isLoaded
@@ -57,6 +77,10 @@ Ext.define('Ext.LocaleManager', {
      */
     _isLoaded : false,
 
+    /**
+     * @private
+     */
+    _ajaxConfig : {},
     /**
      * @private
      */
@@ -81,6 +105,18 @@ Ext.define('Ext.LocaleManager', {
      * @private
      */
     _removeJSFileDelay : 100,
+    /**
+     * @private
+     */
+    _translator: function(options, success, response) {
+        var text = response.responseText;
+
+        return Ext.decode(text);
+    },
+    /**
+     * @private
+     */
+    _type : 'script',
 
     /**
      * Set the configuration for the manager. This should be called right after ext-core.js
@@ -128,6 +164,17 @@ Ext.define('Ext.LocaleManager', {
      * @param {Function} callback A callback method to fire when locale has been loaded.
      */
     loadLocale: function(callback) {
+        var me     = this,
+            type   = me._type,
+            method = type === 'script' ? 'loadScriptTag' : 'loadAjaxRequest';
+
+        me[method](callback);
+    },
+
+    /**
+     * @private
+     */
+    loadScriptTag: function(callback) {
         var me       = this,
             path     = me._path,
             fileTpl  = me._fileTpl,
@@ -155,6 +202,37 @@ Ext.define('Ext.LocaleManager', {
         });
 
         head.appendChild(script);
+    },
+
+    /**
+     * @private
+     */
+    loadAjaxRequest: function(callback) {
+        var me         = this,
+            ajaxConfig = me._ajaxConfig,
+            path       = me._path,
+            lang       = me._language,
+            translator = me._translator,
+            params     = ajaxConfig.params || {},
+            json;
+
+        params.language = lang;
+
+        Ext.apply(ajaxConfig, {
+            params   : params,
+            url      : path,
+            callback : function(options, success, response) {
+                json         = translator(options, success, response);
+                me._locale   = json;
+                me._isLoaded = true;
+
+                if (typeof callback == 'function') {
+                    Ext.Function.bind(callback, me, [me, options, success, response])();
+                }
+            }
+        });
+
+        Ext.Ajax.request(ajaxConfig);
     },
 
     /**

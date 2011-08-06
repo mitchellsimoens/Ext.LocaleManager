@@ -21,7 +21,7 @@
 
         titles : {
             AppForm : 'Panel de Forma Genérica',
-            AppGrid : 'Datos Red'
+            AppGrid : 'Datos Tabla'
         }
     };
 })();

@@ -1,7 +1,11 @@
 Ext.LocaleManager.setConfig({
-    language : 'de',
-    ns       : 'locale',
-    path     : '/locale'
+    ajaxConfig : {
+        method : 'GET'
+    },
+    language   : 'es',
+    ns         : 'locale',
+    path       : 'locale.php',
+    type       : 'ajax'
 });
 
 Ext.onReady(function() {
