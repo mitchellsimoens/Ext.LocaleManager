@@ -1,7 +1,6 @@
 Ext.LocaleManager.setConfig({
     ajaxConfig : {
-        method : 'GET',
-        async  : false
+        method : 'GET'
     },
     language   : 'es',
     path       : 'locale.php',
@@ -18,6 +17,4 @@ Ext.onReady(function() {
     console.log('Before Ext.LocaleManager is loaded: ' + lm.get('actions', 'Hello'));
 
     lm.loadLocale(callback);
-
-    console.log('Does this show right away?');
 });
