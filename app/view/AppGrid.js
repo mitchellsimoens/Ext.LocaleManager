@@ -23,10 +23,14 @@ Ext.define('app.view.AppGrid', {
             store      : me.buildStore(),
             viewConfig : me.buildViewConfig(),
 
-            title      : Ext.LocaleManager.get('titles.AppGrid')
+            title      : me.getLocale('titles.AppGrid', 'Data Grid')
         });
 
         me.callParent();
+    },
+
+    getLocale: function(ns, defaultText) {
+        return Ext.LocaleManager.get(ns, defaultText);
     },
 
     buildColumns: function() {

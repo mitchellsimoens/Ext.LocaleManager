@@ -16,10 +16,14 @@ Ext.define('app.view.AppForm', {
         Ext.apply(me, {
             items : me.buildItems(),
 
-            title : Ext.LocaleManager.get('titles.AppForm')
+            title : me.getLocale('titles.AppForm', 'Generic Form Panel')
         });
 
         me.callParent();
+    },
+
+    getLocale: function(ns, defaultText) {
+        return Ext.LocaleManager.get(ns, defaultText);
     },
 
     buildItems: function() {

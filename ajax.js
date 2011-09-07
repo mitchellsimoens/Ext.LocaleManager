@@ -4,7 +4,6 @@ Ext.LocaleManager.setConfig({
         async  : false
     },
     language   : 'es',
-    ns         : 'locale',
     path       : 'locale.php',
     type       : 'ajax'
 });
