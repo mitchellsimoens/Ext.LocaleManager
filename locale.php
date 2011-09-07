@@ -90,6 +90,8 @@ switch($_REQUEST['language']) {
         break;
 }
 
+sleep(5);
+
 echo json_encode($locale);
 
 ?>
